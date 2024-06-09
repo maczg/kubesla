@@ -1,8 +1,17 @@
-# kubesla
-// TODO(user): Add simple overview of use/purpose
+# kubeSLA
+
+**kubeSLA** is a Kubernetes operator designed to manage and enforce Service Level Agreements (SLAs) for applications running in a Kubernetes cluster. 
+This operator automates the monitoring and management of SLAs, ensuring that your applications meet the desired performance and reliability standards.
+
 
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+kubeSLA provides a powerful and flexible way to define, monitor, and enforce SLAs within your Kubernetes environment. 
+By leveraging custom resource definitions (CRDs), kubeSLA allows users to specify detailed SLA requirements, including metrics, thresholds, and actions to be taken when SLAs are breached. The operator continuously monitors the specified metrics and takes corrective actions when necessary, helping to maintain the desired level of service for your applications.
+
+kubeSLA is an implementation of the [OpenSLO](https://github.com/OpenSLO/OpenSLO) specification, which provides a standardized way to define and manage SLAs in cloud-native environments. 
+By using OpenSLO, kubeSLA ensures compatibility with other tools and platforms that support the specification, making it easy to integrate SLA management into your existing workflows.
+
+kubeSLA is also inspired by [osko](https://github.com/oskoperator/osko) project, which provides a similar functionality for managing SLAs in Kubernetes.
 
 ## Getting Started
 
@@ -67,7 +76,36 @@ make undeploy
 ```
 
 ## Contributing
-// TODO(user): Add detailed information on how you would like others to contribute to this project
+We welcome contributions from the community to help improve kubeSLA. To get started, please follow these steps:
+
+1. **Fork the Repository**: Fork the [kubeSLA repository](https://github.com/maczg/kubesla) to your GitHub account.
+
+2. **Clone the Repository**: Clone your forked repository to your local development environment.
+    ```bash
+    git clone https://github.com/<your-username>/kubesla-operator.git
+    cd kubesla-operator
+    ```
+
+3. **Create a Branch**: Create a new branch for your feature or bug fix.
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+
+4. **Make Your Changes**: Implement your feature or bug fix. Make sure to follow the existing code style and conventions.
+
+5. **Test Your Changes**: Ensure that your changes do not break existing functionality and pass all tests. Add new tests as needed.
+
+6. **Commit Your Changes**: Commit your changes with a clear and descriptive commit message.
+    ```bash
+    git commit -m "Add feature: your feature description"
+    ```
+
+7. **Push Your Changes**: Push your changes to your forked repository.
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+
+8. **Create a Pull Request**: Open a pull request to the main repository. Provide a detailed description of your changes and any relevant information.
 
 **NOTE:** Run `make help` for more information on all potential `make` targets
 
