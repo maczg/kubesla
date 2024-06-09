@@ -1,15 +1,188 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  labels:
-    app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/instance: manager-role
-    app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: kubesla
-    app.kubernetes.io/part-of: kubesla
-    app.kubernetes.io/managed-by: kustomize
   name: manager-role
 rules:
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertconditions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertconditions/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertconditions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertnotitficationtargets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertnotitficationtargets/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertnotitficationtargets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertpolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertpolicies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - alertpolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - datasources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - datasources/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - datasources/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - services/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - services/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slis
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slis/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slis/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slos
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slos/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slos/status
+  verbs:
+  - get
+  - patch
+  - update

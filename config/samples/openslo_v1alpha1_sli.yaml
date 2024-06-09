@@ -1,0 +1,12 @@
+apiVersion: openslo.kubesla.com/v1alpha1
+kind: SLI
+metadata:
+  labels:
+    app.kubernetes.io/name: sli
+    app.kubernetes.io/instance: sli-sample
+    app.kubernetes.io/part-of: kubesla
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubesla
+  name: sli-sample
+spec:
+  # TODO(user): Add fields here

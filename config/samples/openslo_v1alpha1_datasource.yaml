@@ -1,0 +1,12 @@
+apiVersion: openslo.kubesla.com/v1alpha1
+kind: Datasource
+metadata:
+  labels:
+    app.kubernetes.io/name: datasource
+    app.kubernetes.io/instance: datasource-sample
+    app.kubernetes.io/part-of: kubesla
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: kubesla
+  name: datasource-sample
+spec:
+  # TODO(user): Add fields here

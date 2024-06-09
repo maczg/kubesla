@@ -1,0 +1,27 @@
+# permissions for end users to view slos.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: slo-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: kubesla
+    app.kubernetes.io/part-of: kubesla
+    app.kubernetes.io/managed-by: kustomize
+  name: slo-viewer-role
+rules:
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slos
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - openslo.kubesla.com
+  resources:
+  - slos/status
+  verbs:
+  - get

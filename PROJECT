@@ -5,9 +5,74 @@
 domain: kubesla.com
 layout:
 - go.kubebuilder.io/v4
+multigroup: true
 plugins:
   manifests.sdk.operatorframework.io/v2: {}
   scorecard.sdk.operatorframework.io/v2: {}
 projectName: kubesla
 repo: github.com/maczg/kubesla
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kubesla.com
+  group: openslo
+  kind: SLO
+  path: github.com/maczg/kubesla/api/openslo/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kubesla.com
+  group: openslo
+  kind: SLI
+  path: github.com/maczg/kubesla/api/openslo/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kubesla.com
+  group: openslo
+  kind: Service
+  path: github.com/maczg/kubesla/api/openslo/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kubesla.com
+  group: openslo
+  kind: Datasource
+  path: github.com/maczg/kubesla/api/openslo/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kubesla.com
+  group: openslo
+  kind: AlertNotitficationTarget
+  path: github.com/maczg/kubesla/api/openslo/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kubesla.com
+  group: openslo
+  kind: AlertCondition
+  path: github.com/maczg/kubesla/api/openslo/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: kubesla.com
+  group: openslo
+  kind: AlertPolicy
+  path: github.com/maczg/kubesla/api/openslo/v1alpha1
+  version: v1alpha1
 version: "3"

@@ -1,0 +1,41 @@
+# This kustomization.yaml is not intended to be run by itself,
+# since it depends on service name and namespace that are out of this kustomize package.
+# It should be run by config/default
+resources:
+- bases/openslo.kubesla.com_slos.yaml
+- bases/openslo.kubesla.com_slis.yaml
+- bases/openslo.kubesla.com_services.yaml
+- bases/openslo.kubesla.com_datasources.yaml
+- bases/openslo.kubesla.com_alertnotitficationtargets.yaml
+- bases/openslo.kubesla.com_alertconditions.yaml
+- bases/openslo.kubesla.com_alertpolicies.yaml
+#+kubebuilder:scaffold:crdkustomizeresource
+
+patches:
+# [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix.
+# patches here are for enabling the conversion webhook for each CRD
+#- path: patches/webhook_in_openslo_slos.yaml
+#- path: patches/webhook_in_openslo_slis.yaml
+#- path: patches/webhook_in_openslo_services.yaml
+#- path: patches/webhook_in_openslo_datasources.yaml
+#- path: patches/webhook_in_openslo_alertnotitficationtargets.yaml
+#- path: patches/webhook_in_openslo_alertconditions.yaml
+#- path: patches/webhook_in_openslo_alertpolicies.yaml
+#+kubebuilder:scaffold:crdkustomizewebhookpatch
+
+# [CERTMANAGER] To enable cert-manager, uncomment all the sections with [CERTMANAGER] prefix.
+# patches here are for enabling the CA injection for each CRD
+#- path: patches/cainjection_in_openslo_slos.yaml
+#- path: patches/cainjection_in_openslo_slis.yaml
+#- path: patches/cainjection_in_openslo_services.yaml
+#- path: patches/cainjection_in_openslo_datasources.yaml
+#- path: patches/cainjection_in_openslo_alertnotitficationtargets.yaml
+#- path: patches/cainjection_in_openslo_alertconditions.yaml
+#- path: patches/cainjection_in_openslo_alertpolicies.yaml
+#+kubebuilder:scaffold:crdkustomizecainjectionpatch
+
+# [WEBHOOK] To enable webhook, uncomment the following section
+# the following config is for teaching kustomize how to do kustomization for CRDs.
+
+#configurations:
+#- kustomizeconfig.yaml
