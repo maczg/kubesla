@@ -20,34 +20,39 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // DatasourceSpec defines the desired state of Datasource
 type DatasourceSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of Datasource. Edit datasource_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Description is a human-readable description of the datasource
+	Description Description `json:"description,omitempty"`
+	// DisplayName is a human-readable name for the datasource
+	DisplayName string `json:"displayName,omitempty"`
+	// Type is the type of the datasource. It is used to determine the connection details that are required.
+	Type string `json:"type,omitempty"`
+	// ConnectionDetails is a map of key-value pairs that are specific to the datasource type
+	ConnectionDetails map[string]string `json:"connectionDetails,omitempty"`
 }
 
 // DatasourceStatus defines the observed state of Datasource
 type DatasourceStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	LastChecked   metav1.Time `json:"lastChecked,omitempty"`
+	StatusMessage string      `json:"statusMessage,omitempty"`
+	IsHealthy     bool        `json:"isHealthy,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:printcolumn:name="Type",type="string",JSONPath=".spec.type"
+//+kubebuilder:printcolumn:name="LastChecked",type="date",JSONPath=".status.lastChecked"
+//+kubebuilder:printcolumn:name="IsHealthy",type="boolean",JSONPath=".status.isHealthy"
+//+kubebuilder:printcolumn:name="StatusMessage",type="string",JSONPath=".status.statusMessage"
 
 // Datasource is the Schema for the datasources API
+// It enables reusing one source between many SLOs and moving connection specific details (e.g. authentication) away from SLO definitions.
 type Datasource struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   DatasourceSpec   `json:"spec,omitempty"`
-	Status DatasourceStatus `json:"status,omitempty"`
+	Spec              DatasourceSpec   `json:"spec,omitempty"`
+	Status            DatasourceStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true

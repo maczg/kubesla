@@ -34,9 +34,8 @@ spec:
           spec:
             description: ServiceSpec defines the desired state of Service
             properties:
-              foo:
-                description: Foo is an example field of Service. Edit service_types.go
-                  to remove/update
+              description:
+                maxLength: 1050
                 type: string
             type: object
           status:

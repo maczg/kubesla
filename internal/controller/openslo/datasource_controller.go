@@ -18,6 +18,11 @@ package openslo
 
 import (
 	"context"
+	"fmt"
+	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"net/http"
+	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -33,25 +38,36 @@ type DatasourceReconciler struct {
 	Scheme *runtime.Scheme
 }
 
+const urlPattern = `^https?://.*`
+
 //+kubebuilder:rbac:groups=openslo.kubesla.com,resources=datasources,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=openslo.kubesla.com,resources=datasources/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=openslo.kubesla.com,resources=datasources/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the Datasource object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
-//
-// For more details, check Reconcile and its Result here:
-// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.16.3/pkg/reconcile
 func (r *DatasourceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	logger := log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	dataSource := &openslov1alpha1.Datasource{}
+	if err := r.Get(ctx, req.NamespacedName, dataSource); err != nil {
+		if errors.IsNotFound(err) {
+			// Resource not found
+			return ctrl.Result{}, nil
+		}
+		// Error reading the object
+		return ctrl.Result{}, err
+	}
 
-	return ctrl.Result{}, nil
+	logger.Info("Reconciling Datasource", "Name", dataSource.Name)
+
+	err := r.handleDataSource(ctx, dataSource)
+	if err != nil {
+		logger.Error(err, "Failed to handle datasource")
+		return ctrl.Result{RequeueAfter: 1 * time.Minute}, err
+	}
+
+	return ctrl.Result{RequeueAfter: 1 * time.Minute}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
@@ -59,4 +75,46 @@ func (r *DatasourceReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&openslov1alpha1.Datasource{}).
 		Complete(r)
+}
+
+func (r *DatasourceReconciler) handleDataSource(ctx context.Context, dataSource *openslov1alpha1.Datasource) error {
+	switch dataSource.Spec.Type {
+	case "Prometheus":
+		url, urlOk := dataSource.Spec.ConnectionDetails["url"]
+		if !urlOk {
+			return fmt.Errorf("missing required connection detail: url")
+		}
+
+		isHealthy, statusMessage := probePrometheus(url)
+
+		dataSource.Status.LastChecked = metav1.Now()
+		dataSource.Status.IsHealthy = isHealthy
+		dataSource.Status.StatusMessage = statusMessage
+
+		if err := r.Status().Update(ctx, dataSource); err != nil {
+			return err
+		}
+		return nil
+
+	case "Datadog":
+		return fmt.Errorf("unsupported data source type: %s", dataSource.Spec.Type)
+	case "CloudWatch":
+		return fmt.Errorf("unsupported data source type: %s", dataSource.Spec.Type)
+	default:
+		return fmt.Errorf("unsupported data source type: %s", dataSource.Spec.Type)
+	}
+}
+
+func probePrometheus(url string) (bool, string) {
+	resp, err := http.Get(url + "/-/ready")
+	if err != nil {
+		return false, fmt.Sprintf("Failed to reach Prometheus: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK {
+		return true, "Prometheus is healthy"
+	}
+
+	return false, fmt.Sprintf("Prometheus is unhealthy: %s", resp.Status)
 }

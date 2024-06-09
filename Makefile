@@ -50,8 +50,13 @@ endif
 # This is useful for CI or a project to utilize a specific version of the operator-sdk toolkit.
 OPERATOR_SDK_VERSION ?= v1.34.2
 
+
+# Define a variable to get the short SHA from Git
+GIT_SHA := $(shell git rev-parse --short HEAD)
+
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+IMG ?= quay.io/massigollo/kubesla:$(GIT_SHA)
+
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.28.3
 
