@@ -20,22 +20,37 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+// Indicator is the inlined version of the SLISpec
+type Indicator struct {
+	Metadata metav1.ObjectMeta `json:"metadata,omitempty"`
+	Spec     SLISpec           `json:"spec,omitempty"`
+}
 
 // SLOSpec defines the desired state of SLO
 type SLOSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Description Description `json:"description,omitempty"`
+	// Service is the name of the service that the SLO is associated with
+	Service string `json:"service,omitempty"`
 
-	// Foo is an example field of SLO. Edit slo_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Sli is the inlined version of the SLISpec. Either Indicator or IndicatorRef must be set
+	Sli *SLISpec `json:"sli,omitempty"`
+	// SliRef is a reference to an SLI object. Either Indicator or IndicatorRef must be set
+	SliRef *string `json:"SliRef,omitempty"`
+	// +kubebuilder:validation:MaxItems=1
+	// TimeWindow is exactly one item; one of possible: Rolling or CalendarAligned time window
+	TimeWindow []TimeWindowSpec `json:"timeWindow,omitempty"`
+
+	// +kubebuilder:validation:Enum=Occurrences;Timeslices;RatioTimeslices
+	BudgetingMethod string `json:"budgetingMethod,omitempty"`
+
+	// Objectives is a list of ObjectivesSpec that defines the SLO
+	// +kubebuilder:validation:MinItems=1
+	Objectives []ObjectivesSpec `json:"objectives,omitempty"`
+	//AlertPolicies   []SLOAlertPolicy `json:"alertPolicies,omitempty"`
 }
 
 // SLOStatus defines the observed state of SLO
 type SLOStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 }
 
 //+kubebuilder:object:root=true
